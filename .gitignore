@@ -1,0 +1,7 @@
+/.idea
+botToken.txt
+app.log
+target/**
+target/
+target/*
+

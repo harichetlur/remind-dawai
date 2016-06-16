@@ -1,1 +1,12 @@
-HelloWorld.class
+com/dawai/Dawai.class
+com/dawai/telegram/TelegramResponse.class
+com/dawai/telegram/User.class
+com/dawai/HelloWorld$1.class
+com/dawai/telegram/Update.class
+com/dawai/Nurse.class
+com/dawai/HelloWorld.class
+com/dawai/DupliMap.class
+com/dawai/DawaiServer.class
+com/dawai/telegram/Message.class
+com/dawai/Prescription.class
+com/dawai/TIME_FRAME.class

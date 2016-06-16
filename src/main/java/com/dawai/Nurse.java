@@ -4,10 +4,9 @@ import java.util.*;
 
 public class Nurse {
 
-    Stack<Dawai> fStack;
+    private static Stack<Dawai> fStack = new Stack<>();;
 
     public Nurse(Prescription fPrescription) {
-        fStack = new Stack<>();
         this.fPrescription = fPrescription;
     }
 
@@ -18,10 +17,14 @@ public class Nurse {
 
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int day = cal.get(Calendar.DAY_OF_WEEK);
+
+        if(hour == 0 )
+            fStack.remove(TIME_FRAME.DAY);
+
         //Check if morning
         if (hour >= 6 && hour < 12) {
             //Clear any daily/nightly doses
-            fStack.remove(TIME_FRAME.DAY);
+
             fStack.remove(TIME_FRAME.NIGHT);
 
             dawaiList.addAll(fPrescription.getForTimeFrame(TIME_FRAME.MORNING));
@@ -66,6 +69,10 @@ public class Nurse {
             fStack.remove(TIME_FRAME.AFTERNOON);
             dawaiList.addAll(fPrescription.getForTimeFrame(TIME_FRAME.NIGHT));
         }
+
+        for(Dawai d: dawaiList)
+            if(fStack.contains(d))
+                dawaiList.remove(d);
 
         fStack.addAll(dawaiList);
         return dawaiList;

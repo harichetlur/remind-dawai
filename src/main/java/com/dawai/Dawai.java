@@ -17,4 +17,13 @@ public class Dawai {
     public TIME_FRAME[] getfDoses() {
         return fDoses;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof Dawai))
+            return false;
+
+        Dawai d = (Dawai)o;
+        return d.getfDawaiName().equals(this.fDawaiName);
+    }
 }

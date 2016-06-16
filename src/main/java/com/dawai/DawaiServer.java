@@ -26,7 +26,6 @@ import java.util.*;
 import static java.lang.Thread.sleep;
 
 
-
 public class DawaiServer {
 
     private static int fChatId;
@@ -39,8 +38,6 @@ public class DawaiServer {
     private static String BOT_TOKEN;
     private static String BOT_URL = "https://api.telegram.org/bot";
 
-
-
     public static void main(String[] args) {
         try {
 
@@ -48,7 +45,7 @@ public class DawaiServer {
             Files.lines(filePath).forEach(o -> BOT_TOKEN = String.valueOf(o));
 
             init();
-            setupDawai();
+
             setupCalendar();
             startResponseListener();
             startNurseThread();
@@ -64,14 +61,14 @@ public class DawaiServer {
                     try {
 
                         TelegramResponse telegramResponse = getLastResponse();
-                        for(Update update : telegramResponse.getResult()) {
+                        for (Update update : telegramResponse.getResult()) {
                             String updateText = update.getMessage().getText();
-                            if(updateText != null) {
-                                if(updateText.equalsIgnoreCase("done") || updateText.contains("done")) {
+                            if (updateText != null) {
+                                if (updateText.equalsIgnoreCase("done") || updateText.contains("done")) {
                                     sendMessage(fNurse.done());
                                 } else if (updateText.equalsIgnoreCase("peek") || updateText.contains("peek")) {
                                     Enumeration<Dawai> dawaiList = fNurse.getWhatsLeft();
-                                    while(dawaiList.hasMoreElements()) {
+                                    while (dawaiList.hasMoreElements()) {
                                         sendMessage("You need to take " + dawaiList.nextElement().getfDawaiName());
                                     }
                                 }
@@ -92,14 +89,14 @@ public class DawaiServer {
     private static void startNurseThread() {
         new Thread() {
             public void run() {
-                while(true) {
+                while (true) {
                     try {
                         List<Dawai> dawaiList = fNurse.getDawaiToTake(fCalendar);
-                        for(Dawai d : dawaiList) {
+                        for (Dawai d : dawaiList) {
                             sendMessage(String.format("Remember to take dawai - %s", d.getfDawaiName()));
                             sleep(1000);
                         }
-                        Thread.sleep(3600000);
+                        //Thread.sleep(3600000);
                     } catch (Exception e) {
 
                     }
@@ -128,7 +125,7 @@ public class DawaiServer {
     private static void setupDawai() {
         List<Dawai> dawaiList = new ArrayList<>();
         dawaiList.add(new Dawai("Liquid drops", new TIME_FRAME[]{TIME_FRAME.MORNING, TIME_FRAME.NIGHT}));
-        dawaiList.add(new Dawai("Sugar Pills", new TIME_FRAME[]{TIME_FRAME.MORNING, TIME_FRAME.AFTERNOON,TIME_FRAME.NIGHT}));
+        dawaiList.add(new Dawai("Sugar Pills", new TIME_FRAME[]{TIME_FRAME.MORNING, TIME_FRAME.AFTERNOON, TIME_FRAME.NIGHT}));
         dawaiList.add(new Dawai("Daily Powder", new TIME_FRAME[]{TIME_FRAME.DAY}));
         dawaiList.add(new Dawai("4th day Powder", new TIME_FRAME[]{TIME_FRAME.MON, TIME_FRAME.THU}));
         Prescription prescription = new Prescription(dawaiList);
@@ -146,6 +143,8 @@ public class DawaiServer {
         fChatId = telegramResponse.getResult()[0].getMessage().getChat().getId();
         fUsername = telegramResponse.getResult()[0].getMessage().getFrom().getUsername();
         fLogger.info("Initialized with user : " + fUsername + " and chat id : " + fChatId + ". Offset set to : " + fOffset);
+
+        setupDawai();
     }
 
     private static TelegramResponse getLastResponse() throws IOException {

@@ -1,12 +1,15 @@
 com/dawai/Dawai.class
 com/dawai/telegram/TelegramResponse.class
+com/dawai/DawaiServer$1.class
 com/dawai/telegram/User.class
-com/dawai/HelloWorld$1.class
 com/dawai/telegram/Update.class
 com/dawai/Nurse.class
-com/dawai/HelloWorld.class
+com/dawai/telegram/GetUpdates.class
+com/dawai/DawaiServer$2.class
 com/dawai/DupliMap.class
+com/dawai/telegram/Chat.class
 com/dawai/DawaiServer.class
 com/dawai/telegram/Message.class
+com/dawai/telegram/SentMessage.class
 com/dawai/Prescription.class
 com/dawai/TIME_FRAME.class

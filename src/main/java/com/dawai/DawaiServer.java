@@ -98,7 +98,7 @@ public class DawaiServer {
                         }
                         //Thread.sleep(3600000);
                     } catch (Exception e) {
-
+                        fLogger.error(e.getMessage());
                     }
                 }
             }

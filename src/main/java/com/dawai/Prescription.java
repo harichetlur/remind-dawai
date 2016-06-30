@@ -9,12 +9,18 @@ public class Prescription {
     public Prescription(List<Dawai> dawaiList) {
         fDosage = new DupliMap();
         for(Dawai dawai : dawaiList)
-            for(TIME_FRAME dose: dawai.getfDoses())
+            for(TIME_FRAME dose: dawai.getDoses())
                 fDosage.put(dose, dawai);
     }
 
-    public List<Dawai> getForTimeFrame(TIME_FRAME timeFrame) {
-        return fDosage.get(timeFrame);
+    public Map<Integer, Dawai> getForTimeFrame(TIME_FRAME timeFrame) {
+        Map<Integer, Dawai> returnValue = new HashMap<>();
+	    if(fDosage.get(timeFrame)!=null) {
+		    for (Dawai d : fDosage.get(timeFrame)) {
+			    returnValue.put(d.getDawaiId(), d);
+		    }
+	    }
+        return returnValue;
     }
 }
 

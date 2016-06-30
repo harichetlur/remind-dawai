@@ -4,17 +4,21 @@ public class Dawai {
 
     private String fDawaiName;
     private TIME_FRAME[] fDoses;
+    private boolean fDone;
+	private final int fDawaiId;
 
-    public Dawai(String fDawaiName, TIME_FRAME[] fDoses) {
-        this.fDawaiName = fDawaiName;
-        this.fDoses = fDoses;
+    public Dawai(String dawaiName, TIME_FRAME[] doses, int dawaiId) {
+        this.fDawaiName = dawaiName;
+        this.fDoses = doses;
+	    fDawaiId = dawaiId;
+	    fDone = false;
     }
 
-    public String getfDawaiName() {
+    public String getDawaiName() {
         return fDawaiName;
     }
 
-    public TIME_FRAME[] getfDoses() {
+    public TIME_FRAME[] getDoses() {
         return fDoses;
     }
 
@@ -24,6 +28,18 @@ public class Dawai {
             return false;
 
         Dawai d = (Dawai)o;
-        return d.getfDawaiName().equals(this.fDawaiName);
+        return d.getDawaiName().equals(this.fDawaiName);
     }
+
+    public boolean isDone() {
+        return fDone;
+    }
+
+    public void setDone(boolean done) {
+        fDone = done;
+    }
+
+	public int getDawaiId() {
+		return fDawaiId;
+	}
 }

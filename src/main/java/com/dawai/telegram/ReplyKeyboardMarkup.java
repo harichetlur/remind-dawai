@@ -5,17 +5,17 @@ package com.dawai.telegram;
  */
 public class ReplyKeyboardMarkup {
 
-    private KeyboardButton[][] keyboardButtons;
+    private KeyboardButton[][] keyboard;
 
     public ReplyKeyboardMarkup(KeyboardButton[][] keyboardButtons) {
-        this.keyboardButtons = keyboardButtons;
+        this.keyboard = keyboardButtons;
     }
 
-    public KeyboardButton[][] getKeyboardButtons() {
-        return keyboardButtons;
+    public KeyboardButton[][] getKeyboard() {
+        return keyboard;
     }
 
-    public void setKeyboardButtons(KeyboardButton[][] keyboardButtons) {
-        this.keyboardButtons = keyboardButtons;
+    public void setKeyboard(KeyboardButton[][] keyboard) {
+        this.keyboard = keyboard;
     }
 }

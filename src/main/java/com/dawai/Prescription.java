@@ -9,23 +9,24 @@ public class Prescription {
     public Prescription(List<Dawai> dawaiList) {
         fDosage = new DupliMap();
         for(Dawai dawai : dawaiList)
-            for(TIME_FRAME dose: dawai.getDoses())
+            for(TimeFrame dose: dawai.getDoses())
                 fDosage.put(dose, dawai);
     }
 
-    public Map<Integer, Dawai> getForTimeFrame(TIME_FRAME timeFrame) {
-        Map<Integer, Dawai> returnValue = new HashMap<>();
+    public DupliMap getForTimeFrame(TimeFrame timeFrame) {
+        DupliMap returnValue = new DupliMap();
 	    if(fDosage.get(timeFrame)!=null) {
 		    for (Dawai d : fDosage.get(timeFrame)) {
-			    returnValue.put(d.getDawaiId(), d);
+			    returnValue.put(timeFrame, d);
 		    }
 	    }
         return returnValue;
     }
 }
 
-class DupliMap extends HashMap<TIME_FRAME, List<Dawai>> {
-    public void put(TIME_FRAME key, Dawai number) {
+class DupliMap extends HashMap<TimeFrame, List<Dawai>> {
+
+    public void put(TimeFrame key, Dawai number) {
         List<Dawai> current = get(key);
         if (current == null) {
             current = new ArrayList<>();
@@ -33,4 +34,14 @@ class DupliMap extends HashMap<TIME_FRAME, List<Dawai>> {
         }
         current.add(number);
     }
+
+	public Dawai getDawai(int dawaiId) {
+		for(List<Dawai> list : super.values()) {
+			for(Dawai d: list) {
+				if (d.getDawaiId() == dawaiId)
+					return d;
+			}
+		}
+		return null;
+	}
 }

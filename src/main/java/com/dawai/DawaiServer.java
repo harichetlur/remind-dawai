@@ -1,7 +1,6 @@
 package com.dawai;
 
 import com.dawai.telegram.GetUpdates;
-import com.dawai.telegram.KeyboardButton;
 import com.dawai.telegram.ReplyKeyboardMarkup;
 import com.dawai.telegram.SendMessage;
 import com.dawai.telegram.TelegramResponse;
@@ -103,10 +102,11 @@ public class DawaiServer {
 			public void run() {
 				while (true) {
 					try {
-						Map<Integer, Dawai> dawaiMap = fNurse.getDawaiToTake(fCalendar);
-						for (Dawai d : dawaiMap.values()) {
-							sendMessage(String.format("Remember to take dawai - %s", d.getDawaiName()), ReplyKeyboardMarkupFactory.getBaseCommandsKeyboardMarkup());
-							sleep(1000);
+						DupliMap dawaiMap = fNurse.getDawaiToTake(fCalendar);
+						for(List<Dawai> dList : dawaiMap.values()) {
+							for (Dawai d : dList) {
+								sendMessage(String.format("Remember to take dawai - %s", d.getDawaiName()), ReplyKeyboardMarkupFactory.getBaseCommandsKeyboardMarkup());
+							}
 						}
 						//Thread.sleep(3600000);
 					} catch (Exception e) {
@@ -136,10 +136,10 @@ public class DawaiServer {
 
 	private static void setupDawai() {
 		List<Dawai> dawaiList = new ArrayList<>();
-		dawaiList.add(new Dawai("Liquid drops", new TIME_FRAME[]{TIME_FRAME.MORNING, TIME_FRAME.NIGHT}, 1));
-		dawaiList.add(new Dawai("Sugar Pills", new TIME_FRAME[]{TIME_FRAME.MORNING, TIME_FRAME.AFTERNOON, TIME_FRAME.NIGHT}, 2));
-		dawaiList.add(new Dawai("Daily Powder", new TIME_FRAME[]{TIME_FRAME.DAY}, 3));
-		dawaiList.add(new Dawai("4th day Powder", new TIME_FRAME[]{TIME_FRAME.MON, TIME_FRAME.THU}, 4));
+		dawaiList.add(new Dawai("Liquid drops", new TimeFrame[]{TimeFrame.MORNING, TimeFrame.NIGHT}, 1));
+		dawaiList.add(new Dawai("Sugar Pills", new TimeFrame[]{TimeFrame.MORNING, TimeFrame.AFTERNOON, TimeFrame.NIGHT}, 2));
+		dawaiList.add(new Dawai("Daily Powder", new TimeFrame[]{TimeFrame.DAY}, 3));
+		dawaiList.add(new Dawai("4th day Powder", new TimeFrame[]{TimeFrame.MON, TimeFrame.THU}, 4));
 		Prescription prescription = new Prescription(dawaiList);
 		fNurse = new Nurse(prescription);
 	}

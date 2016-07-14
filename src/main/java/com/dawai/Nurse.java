@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Nurse {
 
-    private static Map<Integer, Dawai> fDawaiMap = new HashMap<>();;
+    private static DupliMap fDawaiMap = new DupliMap();;
 
     public Nurse(Prescription fPrescription) {
         this.fPrescription = fPrescription;
@@ -12,80 +12,91 @@ public class Nurse {
 
     Prescription fPrescription;
 
-    public Map<Integer, Dawai> getDawaiToTake(Calendar cal) {
-        Map<Integer, Dawai> dawaiList = new HashMap<>();
+    public DupliMap getDawaiToTake(Calendar cal) {
+        DupliMap dawaiMap = new DupliMap();
 
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int day = cal.get(Calendar.DAY_OF_WEEK);
 
         if(hour == 0 ) {
-            fDawaiMap.remove(TIME_FRAME.DAY);
-            dawaiList.putAll(fPrescription.getForTimeFrame(TIME_FRAME.DAY));
+            fDawaiMap.remove(TimeFrame.DAY);
+            dawaiMap.putAll(fPrescription.getForTimeFrame(TimeFrame.DAY));
         } else if (hour >= 6 && hour < 12) {
             //Clear any daily/nightly doses
-            fDawaiMap.remove(TIME_FRAME.NIGHT);
-            dawaiList.putAll(fPrescription.getForTimeFrame(TIME_FRAME.MORNING));
+            fDawaiMap.remove(TimeFrame.NIGHT);
+            dawaiMap.putAll(fPrescription.getForTimeFrame(TimeFrame.MORNING));
 
             switch (day) {
                 case 1:
-                    fDawaiMap.remove(TIME_FRAME.SAT);
-                    if(fPrescription.getForTimeFrame(TIME_FRAME.SUN)!=null)
-                        dawaiList.putAll(fPrescription.getForTimeFrame(TIME_FRAME.SUN));
+                    fDawaiMap.remove(TimeFrame.SAT);
+                    if(fPrescription.getForTimeFrame(TimeFrame.SUN)!=null)
+                        dawaiMap.putAll(fPrescription.getForTimeFrame(TimeFrame.SUN));
                     break;
                 case 2:
-                    fDawaiMap.remove(TIME_FRAME.SUN);
-                    if(fPrescription.getForTimeFrame(TIME_FRAME.MON)!=null)
-                        dawaiList.putAll(fPrescription.getForTimeFrame(TIME_FRAME.MON));
+                    fDawaiMap.remove(TimeFrame.SUN);
+                    if(fPrescription.getForTimeFrame(TimeFrame.MON)!=null)
+                        dawaiMap.putAll(fPrescription.getForTimeFrame(TimeFrame.MON));
                     break;
                 case 3:
-                    fDawaiMap.remove(TIME_FRAME.MON);
-                    if(fPrescription.getForTimeFrame(TIME_FRAME.TUE)!=null)
-                        dawaiList.putAll(fPrescription.getForTimeFrame(TIME_FRAME.TUE));
+                    fDawaiMap.remove(TimeFrame.MON);
+                    if(fPrescription.getForTimeFrame(TimeFrame.TUE)!=null)
+                        dawaiMap.putAll(fPrescription.getForTimeFrame(TimeFrame.TUE));
                     break;
                 case 4:
-                    fDawaiMap.remove(TIME_FRAME.TUE);
-                    if(fPrescription.getForTimeFrame(TIME_FRAME.WED)!=null)
-                        dawaiList.putAll(fPrescription.getForTimeFrame(TIME_FRAME.WED));
+                    fDawaiMap.remove(TimeFrame.TUE);
+                    if(fPrescription.getForTimeFrame(TimeFrame.WED)!=null)
+                        dawaiMap.putAll(fPrescription.getForTimeFrame(TimeFrame.WED));
                     break;
                 case 5:
-                    fDawaiMap.remove(TIME_FRAME.WED);
-                    if(fPrescription.getForTimeFrame(TIME_FRAME.THU)!=null)
-                        dawaiList.putAll(fPrescription.getForTimeFrame(TIME_FRAME.THU));
+                    fDawaiMap.remove(TimeFrame.WED);
+                    if(fPrescription.getForTimeFrame(TimeFrame.THU)!=null)
+                        dawaiMap.putAll(fPrescription.getForTimeFrame(TimeFrame.THU));
                     break;
                 case 6:
-                    fDawaiMap.remove(TIME_FRAME.THU);
-                    if(fPrescription.getForTimeFrame(TIME_FRAME.FRI)!=null)
-                        dawaiList.putAll(fPrescription.getForTimeFrame(TIME_FRAME.FRI));
+                    fDawaiMap.remove(TimeFrame.THU);
+                    if(fPrescription.getForTimeFrame(TimeFrame.FRI)!=null)
+                        dawaiMap.putAll(fPrescription.getForTimeFrame(TimeFrame.FRI));
                     break;
                 case 7:
-                    fDawaiMap.remove(TIME_FRAME.FRI);
-                    if(fPrescription.getForTimeFrame(TIME_FRAME.SAT)!=null)
-                        dawaiList.putAll(fPrescription.getForTimeFrame(TIME_FRAME.SAT));
+                    fDawaiMap.remove(TimeFrame.FRI);
+                    if(fPrescription.getForTimeFrame(TimeFrame.SAT)!=null)
+                        dawaiMap.putAll(fPrescription.getForTimeFrame(TimeFrame.SAT));
                     break;
             }
         } else if (hour >= 12 && hour < 18) { //Check if afternoon
-            fDawaiMap.remove(TIME_FRAME.MORNING);
-            dawaiList.putAll(fPrescription.getForTimeFrame(TIME_FRAME.AFTERNOON));
+            fDawaiMap.remove(TimeFrame.MORNING);
+            dawaiMap.putAll(fPrescription.getForTimeFrame(TimeFrame.AFTERNOON));
 
         } else {
-            fDawaiMap.remove(TIME_FRAME.AFTERNOON);
-            dawaiList.putAll(fPrescription.getForTimeFrame(TIME_FRAME.NIGHT));
+            fDawaiMap.remove(TimeFrame.AFTERNOON);
+            dawaiMap.putAll(fPrescription.getForTimeFrame(TimeFrame.NIGHT));
         }
 
-        Iterator<Dawai> i = dawaiList.values().iterator();
 
-	    while(i.hasNext()) {
-            Dawai d = i.next();
-            if(fDawaiMap.containsKey(d.getDawaiId()))
-                i.remove();
-        }
+	    for(Map.Entry<TimeFrame, List<Dawai>> e : dawaiMap.entrySet()) {
+		    List<Dawai> dawaiToBeAdded = e.getValue();
+		    List<Dawai> existingDawai = fDawaiMap.get(e.getKey());
 
-        fDawaiMap.putAll(dawaiList);
-        return dawaiList;
+		    if(existingDawai == null) {
+			    fDawaiMap.put(e.getKey(), dawaiToBeAdded);
+		    } else {
+			    Iterator<Dawai> i = dawaiToBeAdded.iterator();
+			    while (i.hasNext()) {
+				    Dawai d = i.next();
+
+				    if (fDawaiMap.getDawai(d.getDawaiId()) != null)
+					    i.remove();
+			    }
+			    existingDawai.addAll(dawaiToBeAdded);
+		    }
+	    }
+
+	    return dawaiMap;
+
     }
 
     public String done(int dawaiId) {
-        Dawai d = fDawaiMap.get(dawaiId);
+        Dawai d = fDawaiMap.getDawai(dawaiId);
 
         if(d == null)
             throw new IllegalArgumentException("Boo");
@@ -99,10 +110,12 @@ public class Nurse {
 
     public List<Dawai> getWhatsLeft() {
         List<Dawai> dawaiList = new ArrayList<>();
-        for(Dawai d : fDawaiMap.values()) {
-            if(!d.isDone())
-                dawaiList.add(d);
-        }
+	    for(List<Dawai> dList : fDawaiMap.values()) {
+		    for(Dawai d : dList) {
+			    if(!d.isDone())
+				    dawaiList.add(d);
+		    }
+	    }
         return dawaiList;
     }
 

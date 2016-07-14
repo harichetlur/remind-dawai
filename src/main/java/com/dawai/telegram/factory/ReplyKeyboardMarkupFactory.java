@@ -13,43 +13,43 @@ import java.util.Map;
  */
 public class ReplyKeyboardMarkupFactory {
 
-    private static Map<String, ReplyKeyboardMarkup> fMarkupCache;
+	private static Map<String, ReplyKeyboardMarkup> fMarkupCache;
 
-    static {
-        fMarkupCache = new HashMap();
-    }
+	static {
+		fMarkupCache = new HashMap();
+	}
 
-    public static ReplyKeyboardMarkup getBaseCommandsKeyboardMarkup() {
+	public static ReplyKeyboardMarkup getBaseCommandsKeyboardMarkup() {
 
-        ReplyKeyboardMarkup replyKeyboardMarkup =  fMarkupCache.get("baseCommands");
-        if(replyKeyboardMarkup != null)
-            return replyKeyboardMarkup;
+		ReplyKeyboardMarkup replyKeyboardMarkup = fMarkupCache.get("baseCommands");
+		if (replyKeyboardMarkup != null)
+			return replyKeyboardMarkup;
 
-        KeyboardButton[][] keyboardButtons = new KeyboardButton[1][2];
-        keyboardButtons[0][0] = new KeyboardButton("Done with a dawai");
-        keyboardButtons[0][1] = new KeyboardButton("See what's left");
+		KeyboardButton[][] keyboardButtons = new KeyboardButton[1][2];
+		keyboardButtons[0][0] = new KeyboardButton("Done with a dawai");
+		keyboardButtons[0][1] = new KeyboardButton("See what's left");
 
-        replyKeyboardMarkup = new ReplyKeyboardMarkup(keyboardButtons);
-        fMarkupCache.put("baseCommands", replyKeyboardMarkup);
+		replyKeyboardMarkup = new ReplyKeyboardMarkup(keyboardButtons);
+		fMarkupCache.put("baseCommands", replyKeyboardMarkup);
 
-        return replyKeyboardMarkup;
-    }
+		return replyKeyboardMarkup;
+	}
 
-    public static ReplyKeyboardMarkup getDawaiKeyboardMarkup(List<Dawai> dawaiList) {
-        int size = dawaiList.size();
-        int colCount = size > 1? 2 : 1;
-        int rowCount = (int)Math.ceil((double) size/(double) colCount);
+	public static ReplyKeyboardMarkup getDawaiKeyboardMarkup(List<Dawai> dawaiList) {
+		int size = dawaiList.size();
+		int colCount = size > 1 ? 2 : 1;
+		int rowCount = (int) Math.ceil((double) size / (double) colCount);
 
-        KeyboardButton[][] keyboardButtons = new KeyboardButton[rowCount][colCount];
-        int count = 0;
-        for(Dawai d: dawaiList) {
-            keyboardButtons[count/colCount][count%colCount] = new KeyboardButton(d.getDawaiId() + "- " +d.getDawaiName());
-            count++;
-        }
+		KeyboardButton[][] keyboardButtons = new KeyboardButton[rowCount][colCount];
+		int count = 0;
+		for (Dawai d : dawaiList) {
+			keyboardButtons[count / colCount][count % colCount] = new KeyboardButton(d.getDawaiId() + "- " + d.getDawaiName());
+			count++;
+		}
 
-        if(count!= (colCount * rowCount))
-            keyboardButtons[count/colCount][count%colCount] = new KeyboardButton("");
+		if (count != (colCount * rowCount))
+			keyboardButtons[count / colCount][count % colCount] = new KeyboardButton("");
 
-        return new ReplyKeyboardMarkup(keyboardButtons);
-    }
+		return new ReplyKeyboardMarkup(keyboardButtons);
+	}
 }

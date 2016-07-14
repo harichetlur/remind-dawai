@@ -3,11 +3,11 @@ package com.dawai;
 public class Dawai {
 
     private String fDawaiName;
-    private TIME_FRAME[] fDoses;
+    private TimeFrame[] fDoses;
     private boolean fDone;
 	private final int fDawaiId;
 
-    public Dawai(String dawaiName, TIME_FRAME[] doses, int dawaiId) {
+    public Dawai(String dawaiName, TimeFrame[] doses, int dawaiId) {
         this.fDawaiName = dawaiName;
         this.fDoses = doses;
 	    fDawaiId = dawaiId;
@@ -18,7 +18,7 @@ public class Dawai {
         return fDawaiName;
     }
 
-    public TIME_FRAME[] getDoses() {
+    public TimeFrame[] getDoses() {
         return fDoses;
     }
 
